@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Testlar</title>
+  <style>
+    body {
+      background-color: lightyellow;
+      font-family: sans-serif;
+    }
+    .container {
+      margin-top: 50px;
+      text-align: center;
+    }
+    .question-container {
+      margin-top: 30px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
+      border: 2px solid #ccc;
+      width: 400px;
+      margin: auto;
+    }
+    .question-container label {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .btn-submit {
+      margin-top: 30px;
+      background-color: green;
+      color: white;
+      padding: 10px 30px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn-back-cen {
+      background-color: red;
+      color: white;
+      position: absolute;
+      top: 20px;
+      left: 15px;
+      width: 150px;
+      height: 34px;
+      border: none;
+      border-radius: 16px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .radio-container {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #f0f0f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .radio-container:hover {
+      background-color: #e0e0e0;
+    }
+    input[type="radio"] {
+      display: none;
+    }
+    input[type="radio"]:checked + label {
+      background-color: #4CAF50;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    .results-container {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <button onclick="window.location.href='test_dropdown.html'" class="btn-back-cen"><<< Orqaga qaytish</button>
+    <h2 id="subjectTitle">Fan: Matematika</h2>
+    <h3 id="topicTitle">Mavzu: Algebraik ifodalar, Tengsizliklar va Tengsizliklar sistemasini yechish</h3>
+    <div id="questionsContainer"></div>
+    <button class="btn-submit" onclick="submitTest()">Testni tugatish</button>
+  </div>
+
+  <div id="resultsContainer" class="results-container" style="display:none;">
+    <p id="scoreResult"></p>
+    <button onclick="window.location.href='test_dropdown.html'" class="btn-submit">Boshqa testni tanlash</button>
+  </div>
+
+  <script>
+    const algebraik_ifoda = [
+      {
+        savol: "a - b, bunda, a = 1, b = 1 bo'lsa algebraik ifodaning qiymatini toping",
+        variantlar: ["2", "0", "4", "1"],
+        javob: "0"
+      },
+      {
+        savol: "3a - 2b, bunda a = 0,5 b = 2 bo'lsa algebraik ifodaning qiymatini toping",
+        variantlar: ["2,5", "0", "-2,5", "4"],
+        javob: "-2,5"
+      },
+      {
+        savol: "2a + 2b, bunda a = 4, b = 0,002 ifodaning qiymatini toping",
+        variantlar: ["8.005", "8.006", "1", "4"],
+        javob: "8.006"
+      },
+      {
+        savol: "1/4x - 3/7y, bunda x = 16, y = 7",
+        variantlar: ["1", "3", "4", "6"],
+        javob: "4"
+      },
+      {
+        savol: "(a - 3b):(a + 3b), bunda a = 2, b = -4",
+        variantlar: ["1,4", "1", "-1,4", "2"],
+        javob: "1,4"
+      },
+      {
+        savol: "Neft quvuridan 1 soatda 7 tonna neft oqadi, m soatda quvurdan necha tonna neft oqadi.",
+        variantlar: ["7(m)t", "2(m)t", "3(m)t", "to'g'ri javob yo'q"],
+        javob: "7(m)t"
+      },
+      {
+        savol: "x = -0,37; y = -0,42 bunda x va y sonlarining ayirmasining uchlanganini toping?",
+        variantlar: ["0,01", "2", "0,15", "4"],
+        javob: "0,15"
+      },
+      {
+        savol: "x = -2,98; y = -0,42 bunda x va y soning ayirmasining uchlanganini toping?",
+        variantlar: ["0,5", "4,6", "4,7", "4,5"],
+        javob: "4,6"
+      },
+      {
+        savol: "x va y soning yig'indisi bilan uning ayirmasini ko'paytmasini toping: x = 0,15, y = -0,75",
+        variantlar: ["2", "0,0675", "0,06", "1"],
+        javob: "0,0675"
+      },
+      {
+        savol: "(2mn(n + k)):(n - k); bunda m = k = 3, n = 5",
+        variantlar: ["4,2", "-4,2", "2", "4,4"],
+        javob: "4,2"
+      },
+      {
+        savol: "Uchburchakning bo'yi a sm, bo'yi b sm. Uning perimetrini toping? a = 5, b = 6",
+        variantlar: ["12", "10", "22", "0"],
+        javob: "22"
+      },
+      {
+        savol: "(3a + 7b):(a + b), bunda a = 2; b = 2 bo'lsa ifodani qiymatini toping?",
+        variantlar: ["9", "5", "1", "20"],
+        javob: "9"
+      },
+      {
+        savol: "a = 2, b = 3; bunda 3a + 2b - 7 ifodasini qiymatini toping.",
+        variantlar: ["-4", "1", "0", "0,1"],
+        javob: "1"
+      },
+      {
+        savol: "x = 3, y = 1 bunda 0,1x - 2y ifodasini qiymatini toping.",
+        variantlar: ["1", "-1,7", "4", "10"],
+        javob: "-1,7"
+      },
+      {
+        savol: "(x + y):a; bunda a = 9, x = 3, y = 8 ifodani qiymatini aniqlang.",
+        variantlar: ["1,2", "1,(2)", "1", "2"],
+        javob: "1,2"
+      }
+    ];
+
+    const tengsizlik_test = [
+      {
+        savol: "Tengsizlikni qo'shing: 5 > -8 va 8 > 5",
+        variantlar: {
+          "a": "13 > 13",
+          "b": "13 > 3",
+          "c": "1 > 3",
+          "d": "to'g'ri javob yo'q!"
+        },
+        javob: "d"
+      },
+      {
+        savol: "Tengsizlikni qo'shing: 3x + y < 2x + 1 va 3y - 2x < x + 5",
+        variantlar: {
+          "a": "x + 4y < 3x + 6",
+          "b": "x + 1 > 12",
+          "c": "x + 3y < 12 - x",
+          "d": "x < 5"
+        },
+        javob: "a"
+      },
+      {
+        savol: "Tengsizlikni ko'paytiring: 25/4 < 29/3 va 4 < 6",
+        variantlar: {
+          "a": "25 < 12",
+          "b": "12 < 25",
+          "c": "1 < 23",
+          "d": "25 < 58"
+        },
+        javob: "d"
+      },
+      {
+        savol: "Tengsizlikni ko'paytiring: 4 < 2x + 1 va 3 < 2x - 1",
+        variantlar: {
+          "a": "12 < 4x - 1",
+          "b": "12 < 23",
+          "c": "2 < 5x",
+          "d": "x < 5"
+        },
+        javob: "c"
+      }
+    ];
+
+    const tengsizlik_systems = [
+      {
+        savol: "Tengsizlikalar sistemasini yeching: x - 2 < 4 va x - 1 > 0;",
+        variantlar: {
+          "a": "(1; 6)",
+          "b": "[1; 6]",
+          "c": "[1, 6)",
+          "d": "to'g'ri javob keltirilmagan"
+        },
+        javob: "c"
+      },
+      {
+        savol: "Tengsizliklar sistemasini yeching: 4x > 2000 va 5x < 4000;",
+        variantlar: {
+          "a": "[500; 80]",
+          "b": "(500; 80)",
+          "c": "(500; 800)",
+          "d": "[500; 800]"
+        },
+        javob: "c"
+      },
+      {
+        savol: "Tengsizliklar sistemasini yeching: 2x > -4 va 3x < 9;",
+        variantlar: {
+          "a": "(-2; 3)",
+          "b": "[-2; 3]",
+          "c": "[2, 3]",
+          "d": "(2; 2)"
+        },
+        javob: "a"
+      },
+      {
+        savol: "Tengsizliklar sistemasini yeching: 5x - 1 > 3(x + 1) va 2(x + 4) > x + 5;",
+        variantlar: {
+          "a": "[1; 3]",
+          "b": "(-3; 2)",
+          "c": "[-3; 1]",
+          "d": "(-1; -3)"
+        },
+        javob: "b"
+      }
+    ];
+
+    function generateQuestions() {
+      const allQuestions = algebraik_ifoda.concat(tengsizlik_test, tengsizlik_systems);
+      const questionsContainer = document.getElementById('questionsContainer');
+      questionsContainer.innerHTML = '';
+
+      allQuestions.forEach((question, index) => {
+        const questionContainer = document.createElement('div');
+        questionContainer.className = 'question-container';
+        
+        const questionText = document.createElement('h4');
+        questionText.textContent = `${index + 1}. ${question.savol}`;
+        questionContainer.appendChild(questionText);
+
+        if (question.variantlar) {
+          Object.keys(question.variantlar).forEach((key) => {
+            const radioContainer = document.createElement('div');
+            radioContainer.className = 'radio-container';
+
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = `question${index}`;
+            input.id = `${index}-${key}`;
+
+            const label = document.createElement('label');
+            label.setAttribute('for', `${index}-${key}`);
+            label.textContent = question.variantlar[key];
+
+            radioContainer.appendChild(input);
+            radioContainer.appendChild(label);
+            questionContainer.appendChild(radioContainer);
+          });
+        }
+
+        questionsContainer.appendChild(questionContainer);
+      });
+    }
+
+    function submitTest() {
+      const allQuestions = algebraik_ifoda.concat(tengsizlik_test, tengsizlik_systems);
+      let score = 0;
+
+      allQuestions.forEach((question, index) => {
+        const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+        if (selectedOption && selectedOption.nextElementSibling.textContent === question.javob) {
+          score++;
+        }
+      });
+
+      document.getElementById('scoreResult').textContent = `Sizning natijangiz: ${score} / ${allQuestions.length}`;
+      document.getElementById('resultsContainer').style.display = 'block';
+      document.querySelector('.container').style.display = 'none';
+    }
+
+    window.onload = generateQuestions;
+  </script>
+</body>
+</html>
