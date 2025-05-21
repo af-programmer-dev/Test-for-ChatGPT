@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Veb - Test</title>
+  <style>
+    body {
+      background-color: lightyellow;
+      font-family: sans-serif;
+    }
+    .container {
+      margin-top: 100px;
+      text-align: center;
+    }
+    .select-subject {
+      width: 300px;
+      font-size: 20px;
+      padding: 5px;
+      border: 2px solid black;
+      text-align: center;
+    }
+    .topics-container {
+      margin-top: 30px;
+      display: inline-block;
+      text-align: left;
+      border: 2px solid red;
+      padding: 20px;
+      border-radius: 15px;
+      background-color: white;
+    }
+    .topics-container label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+      width: 340px;
+    }
+    .btn-start {
+      margin-top: 30px;
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 10px 30px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .test-count-container {
+      margin-top: 30px;
+    }
+    .btn-back-cen {
+      background-color: red;
+      color: white;
+      position: absolute;
+      top: 20px;
+      left: 15px;
+      width: 150px;
+      height: 34px;
+      border: none;
+      border-radius: 16px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .test-count-select {
+      font-size: 18px;
+      padding: 5px 10px;
+      width: 100px;
+      border: 2px solid black;
+      border-radius: 5px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <button onclick="window.location.href='kirishone.html'" class="btn-back-cen"><<< Orqaga qaytish</button>
+  <h2>Fan tanlang:</h2>
+  <select id="subjectSelect" class="select-subject">
+    <option value="">-- Fan tanlang --</option>
+    <option value="matematika">Matematika</option>
+    <option value="ingiliz">Ingliz tili</option>
+    <option value="biologiya">Biologiya</option>
+    <option value="uzb_tarixi">O'zbekiston tarixi</option>
+    <option value="jahon_tarixi">Jahon tarixi</option>
+    <option value="huquq">Davlat va huquq asoslari</option>
+  </select><br><br>
+
+  <div id="topicsBox" class="topics-container">
+    Fan tanlaganigizdan <br> so'ng mavzular chiqadi<br><br>
+    <span style="color: red;">Iltimos faqat 3 ta mavzuni tanlang!</span>
+  </div><br><br>
+
+  <div class="test-count-container">
+    <h3>Test soni:</h3>
+    <select id="testCount" class="test-count-select">
+      <option value="10">10</option>
+      <option value="15">15</option>
+    </select>
+  </div>
+
+  <hr>
+
+  <button class="btn-start">BOSHLASH</button>
+</div>
+
+<script>
+  const topics = {
+    matematika: [
+      "Algebraik ifodalar",
+      "Tengsizliklarni qo'shish va ko'paytirish",
+      "Tengsizliklar / Sonli oraliqlar",
+      "Modullar",
+      "Kvadrat tenglamalar",
+      "Viyet teoremasi",
+      "Bikvadrat tenglamalar",
+      "Kombinatorika"
+    ],
+    ingiliz: [
+      "Present simple",
+      "Past simple",
+      "Future simple",
+      "Reading and exam",
+      "Prepositions",
+      "Phrasal verbs",
+      "Questions",
+      "Adverb vs Adjective",
+      "Have to / Had to"
+    ],
+    biologiya: [
+      "Tayanch-harakatlanish sistemasi",
+      "Qon aylanish sistemasi",
+      "Nafas olish",
+      "Ovqat hazm qilish",
+      "Energiya almashinuvi",
+      "Nerv sistemasi",
+      "Teri va siydik ajratish",
+      "Ko'payish va rivojlanish"
+    ],
+    uzb_tarixi: [
+      "XIII asr boshlarida Xorazmshohlar davlati",
+      "Jaloliddin Manguberdi va davlatning tiklash yo'lida",
+      "Chig'atoy ulusi",
+      "XIII - XIV asr birinchi yarmida ilm-fan",
+      "Amir Temur va Temuriylar davri",
+      "Mirzo Ulug'bek",
+      "Memorchilik, Xattotlik va Miniatyura",
+      "Alisher Navoiy"
+    ],
+    jahon_tarixi: [
+      "Periner yarim oroli",
+      "Rus knyazligida ijtimoiy-siyosiy hayot",
+      "Bolqon yarim oroli",
+      "Uch qit'ani birlashtirgan sultonlik",
+      "O'rta asrlarda(Eron)",
+      "Oltin O'rda xonligi",
+      "O'rta asrlarda Hindiston",
+      "O'rta asrlarda Xitoy",
+      "O'rta asrlarda Yaponiya va Koreya",
+      "O'rta asrlarda Afrika",
+      "Amerika xalqlari",
+      "O'rta asrlarda Yevropa aholisini kundalik hayoti",
+      "XIII - XV asrlarda Yevropa iqtisodi",
+      "Yevropada ilm-fan",
+      "Yevropada me'morchilik va san'at",
+      "Ilk uyg'onish davr madaniyati"
+    ],
+    huquq: [
+      "Shaxs, Jamiyat, Davlat",
+      "Davlat funksiyalari",
+      "Davlat shakllari",
+      "Axloq va huquq",
+      "Huquq manbalari",
+      "Huquq normasi",
+      "Huquq tarmoqlari",
+      "Huquqiy munosabatlar",
+      "Huquqiy xulq-atvor",
+      "Huquqbuzarlik",
+      "Yuridik javobgarlik va uning oqibatlari",
+      "Fuqarolikda voyaga yetmaganlarning huquqlari",
+      "Jinoyatda voyaga yetmaganlarning huquqi va majburiyatlari",
+      "O'zbekiston Respublikasida voyaga yetmaganlarning javobgarligi",
+      "Oila qonunchiligida voyaga yetmaganlarning huquqi va majburiyatlari",
+      "Mehnat qonunchiligida voyaga yetmaganlarning huquqlari"
+    ]
+  };
+
+  const subjectSelect = document.getElementById("subjectSelect");
+  const topicsBox = document.getElementById("topicsBox");
+
+  subjectSelect.addEventListener("change", function () {
+    const selectedSubject = subjectSelect.value;
+    topicsBox.innerHTML = "";
+
+    if (topics[selectedSubject]) {
+      topics[selectedSubject].forEach(topic => {
+        const label = document.createElement("label");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = topic;
+        checkbox.name = "mavzu";
+        label.appendChild(checkbox);
+        label.append(" " + topic);
+        topicsBox.appendChild(label);
+      });
+    } else {
+      topicsBox.innerHTML = "Tanlangan fanga oid mavzular mavjud emas.";
+    }
+  });
+
+  const startButton = document.querySelector('.btn-start');
+  startButton.addEventListener('click', function () {
+    const selectedSubject = subjectSelect.value;
+    const selectedTopics = document.querySelectorAll('input[name="mavzu"]:checked');
+    const testCount = document.getElementById("testCount").value;
+
+    if (selectedTopics.length === 0) {
+      alert("Iltimos kamida 1 ta mavzu tanlang!");
+      return;
+    } else if (selectedTopics.length > 3) {
+      alert("Faqat 3 tagacha mavzu tanlash mumkin!");
+      return;
+    }
+
+    const selectedTopicNames = Array.from(selectedTopics).map(t => t.value);
+
+    if (selectedSubject === "matematika") {
+      // Mavzu mavjud bo'lsa, testga o'tish
+      if (selectedTopicNames.includes("Algebraik ifodalar")) {
+        window.location.href = `tests.html?fan=matematika&mavzu=Algebraik ifodalar&son=${testCount}`;
+      } else {
+        alert("Hozircha faqat Matematika fanining 'Algebraik ifodalar' mavzusi uchun testlar mavjud.");
+      }
+    } else {
+      alert("Tanlangan mavzu uchun testlar mavjud emas.");
+    }
+  });
+</script>
+
+</body>
+</html>
